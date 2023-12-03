@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/altyn-ge.github.io/proj_v2/static/css/main.01d80363.css",
-    "main.js": "/altyn-ge.github.io/proj_v2/static/js/main.8ffbb0d6.js",
+    "main.js": "/altyn-ge.github.io/proj_v2/static/js/main.04a170aa.js",
     "static/js/787.401a48af.chunk.js": "/altyn-ge.github.io/proj_v2/static/js/787.401a48af.chunk.js",
     "index.html": "/altyn-ge.github.io/proj_v2/index.html",
     "main.01d80363.css.map": "/altyn-ge.github.io/proj_v2/static/css/main.01d80363.css.map",
-    "main.8ffbb0d6.js.map": "/altyn-ge.github.io/proj_v2/static/js/main.8ffbb0d6.js.map",
+    "main.04a170aa.js.map": "/altyn-ge.github.io/proj_v2/static/js/main.04a170aa.js.map",
     "787.401a48af.chunk.js.map": "/altyn-ge.github.io/proj_v2/static/js/787.401a48af.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.01d80363.css",
-    "static/js/main.8ffbb0d6.js"
+    "static/js/main.04a170aa.js"
   ]
 }
