@@ -75,7 +75,7 @@ export function ImageGrid(props: ImageGridProps) {
             >
               <Image
                 className="h-full object-cover select-none pointer-events-none"
-                src={`/proj_v2/img/${image.filename}`}
+                src={`/img/${image.filename}`}
                 alt={image.displayName}
                 width={image.width}
                 height={image.height}
