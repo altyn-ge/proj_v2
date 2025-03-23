@@ -23,7 +23,7 @@ export function ImageGrid(props: ImageGridProps) {
 
   const randomImages = useMemo(() => {
     const imgsCopy = [...images];
-    imgsCopy.sort(() => 0.5 - Math.random());
+    imgsCopy.sort((a,b) => a.displayName.localeCompare(b.displayName));
     return imgsCopy;
   }, [images]);
 
@@ -84,7 +84,7 @@ export function ImageGrid(props: ImageGridProps) {
                 quality={70}
                 priority
               />
-              <p className="absolute bottom-0 px-[1px] left-0 text-[10px] bg-stone-900/70 text-white">
+              <p className="absolute bottom-0 px-[1px] text-center text-[10px] bg-stone-900/70 text-white">
                 {image.displayName}
               </p>
             </motion.div>
