@@ -20,6 +20,7 @@ export function ImageGrid(props: ImageGridProps) {
   const { images, className } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const [columnCount, setColumnCount] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const randomImages = useMemo(() => {
     const imgsCopy = [...images];
@@ -41,23 +42,58 @@ export function ImageGrid(props: ImageGridProps) {
     return () => window.removeEventListener("resize", calculateDimensions);
   }, []);
 
-  const layout = useMemo(() => {
+  // useEffect(() => {
+  //   const animateScroll = () => {
+  //     setScrollPosition((prev) => prev + 1); // Adjust the increment as needed
+  //     requestAnimationFrame(animateScroll);
+  //   };
+  
+  //   const animationFrame = requestAnimationFrame(animateScroll);
+  //   return () => cancelAnimationFrame(animationFrame);
+  //   }, []);
+
+  const innerContainerRef = useRef(null);
+
+  useEffect(() => {
+    let currentPosition = 0;
+    let animationFrameId: number;
+    const scrollStep = 0.3;
+  
+    const animateScroll = () => {
+      if (innerContainerRef.current) {
+        const totalHeight = innerContainerRef.current.scrollHeight;
+        // Reset once we've scrolled through all the content
+        if (currentPosition >= totalHeight) {
+          currentPosition = 0;
+        } else {
+          currentPosition += scrollStep;
+        }
+        innerContainerRef.current.style.transform = `translateY(-${currentPosition}px)`;
+      }
+      animationFrameId = requestAnimationFrame(animateScroll);
+    };
+  
+    animationFrameId = requestAnimationFrame(animateScroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);  const layout = useMemo(() => {
     return layoutImages(randomImages, columnCount);
   }, [randomImages, columnCount]);
-
   return (
     <div
       ref={containerRef}
       className={clsx(className)}
-      style={{ margin: `${gap}px`, minHeight: gridHeight }}
+      style={{ margin: `${gap}px`, height: gridHeight, overflowY: "hidden", willChange: "transform" }}
     >
       <div
         className="grid h-full relative"
+        ref={innerContainerRef}
         style={{
+          transform: `translateY(-${scrollPosition}px)`,
           gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
           gridTemplateRows: "repeat(3, 1fr)",
           gridAutoFlow: "dense",
           gap: `${gap}px`,
+          willChange: "transform" 
         }}
       >
         <AnimatePresence>
@@ -84,7 +120,7 @@ export function ImageGrid(props: ImageGridProps) {
                 quality={70}
                 priority
               />
-              <p className="absolute bottom-0 px-[1px] text-center text-[10px] bg-stone-900/70 text-white">
+              <p className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 px-[1px] text-center text-[10px] bg-stone-900/70 text-white min-w-[100%]`}>
                 {image.displayName}
               </p>
             </motion.div>
@@ -124,7 +160,7 @@ function layoutImages(images: ImageFile[], columnCount: number) {
           currentCol = 0;
         }
 
-        if (currentRow >= rowCount) break;
+        // if (currentRow >= rowCount) break;
       }
     }
 
