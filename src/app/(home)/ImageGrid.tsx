@@ -20,7 +20,7 @@ export function ImageGrid(props: ImageGridProps) {
   const { images, className } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const [columnCount, setColumnCount] = useState(0);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollPosition] = useState(0);
 
   const randomImages = useMemo(() => {
     const imgsCopy = [...images];
@@ -52,7 +52,7 @@ export function ImageGrid(props: ImageGridProps) {
   //   return () => cancelAnimationFrame(animationFrame);
   //   }, []);
 
-  const innerContainerRef = useRef(null);
+  const innerContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let currentPosition = 0;
@@ -111,7 +111,7 @@ export function ImageGrid(props: ImageGridProps) {
             >
               <Image
                 className="h-full object-cover select-none pointer-events-none"
-                src={`/img/${image.filename}`}
+                src={`img/${image.filename}`}
                 alt={image.displayName}
                 width={image.width}
                 height={image.height}
