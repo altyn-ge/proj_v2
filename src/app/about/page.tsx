@@ -15,7 +15,7 @@ export default async function AboutPage() {
         российский тюрьмах и лагерях
       </h2>
 
-      <blockquote className="border-l-2 pl-6 mb-8">
+      <blockquote className="border-l-2 pl-6 mb-8" style={{ marginLeft: '40rem' }}>
         <p className="mb-4">
           “Говорят, мы мелко пашем, Оступаясь и скользя На природной почве нашей
           Глубже и пахать нельзя Мы ведь пашем на погосте, Разрыхляем верхний
