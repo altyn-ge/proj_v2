@@ -23,10 +23,10 @@ export const renderComponents: Record<string, ElementType> = {
     );
   },
   th: (props: ComponentProps<"th">) => (
-    <th className="border px-4 py-3" {...props} />
+    <th className="border px-2 py-1" {...props} />
   ),
   td: (props: ComponentProps<"td">) => (
-    <td className="border px-4 py-3" {...props} />
+    <td className="border px-2 py-1" {...props} />
   ),
   mark: (props: ComponentProps<"mark">) => (
     <mark className="bg-transparent" {...props} />

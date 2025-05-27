@@ -1,4 +1,4 @@
-import { ContactForm } from "./ContactForm";
+import { ContactForm, ContactFormNew } from "./ContactForm";
 
 export function generateMetadata() {
   return {
@@ -22,7 +22,8 @@ export default async function ContactPage() {
 
       <div className="page-container py-16">
         <div className="max-w-6xl mx-auto">
-          <ContactForm />
+          <ContactFormNew />
+          {/* <ContactForm /> */}
         </div>
       </div>
     </section>

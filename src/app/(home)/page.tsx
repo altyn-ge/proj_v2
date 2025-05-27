@@ -1,5 +1,6 @@
 import { getImages } from "@/lib/getImages";
 import { ImageGrid } from "./ImageGrid";
+import { DeathSentenceList } from "./DeathSentenceList";
 import clsx from "clsx";
 import Link from "next/link";
 
@@ -13,35 +14,28 @@ export function generateMetadata() {
 export default async function Home() {
   const allImages = await getImages();
   return (
-    <>
-      <section className="bg-[#1b170f] grid md:grid-cols-2">
-        <div className="text-layer px-4 sm:px-6 md:px-9 py-24">
-          <div className="mb-1 text-sm text-background font-secondary">
-            с 1918 по 1953 гг.
+      <section className="bg-[#1b170f] grid md:grid-cols-2 h-[calc(100vh-var(--app-header-height)-var(--app-footer-height))]">
+        <div className="text-layer px-4 sm:px-6 md:px-9 py-10 flex flex-col justify-between">
+          <div>
+            <h1 className="text-4xl font-secondary text-center">
+              Женщины казненные
+            </h1>
+            <h1 className="text-4xl mb-6 font-secondary text-center">
+            советской властью
+            </h1>
+            <p className="text-center">
+              Списки женщин расстрелянных и погибших в советских тюрьмах и лагерях
+            </p>
+            <p className="text-center">с 1918 по 1953 годы</p>
           </div>
-          <h1 className="text-4xl mb-6 font-secondary">
-            Казни женщин в России
-          </h1>
-          <p className="max-w-[500px]">
-            This is some descriptive text about the site content. It will give
-            visitors an idea of what to expect from this site.
-          </p>
+          <div className="mb-10"></div>
+          <h2 className="text-2xl font-secondary text-center mt-20 mb-3">
+            Выдержки из смертных приговоров
+          </h2>
+          <DeathSentenceList />
         </div>
-
         <ImageGrid images={allImages} />
       </section>
-
-      <section>
-        <div className="page-container py-24">
-          <h2 className="text-2xl font-secondary pb-16">Section Title</h2>
-          <div className="grid sm:grid-cols-3 gap-4">
-            <HomeTile title="Списки убитых" href="/lists" />
-            <HomeTile title="От автора" href="/about" />
-            <HomeTile title="Оставьте сообщение" href="/contact" />
-          </div>
-        </div>
-      </section>
-    </>
   );
 }
 

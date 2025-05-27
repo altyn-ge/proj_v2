@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getDocsList, getDocBySlug } from "@/lib/convertDocs";
+import { getDocsList, getDocBySlug, DOCLISTS } from "@/lib/convertDocs";
 import { ArrowRight } from "@/components/icons/ArrowRight";
 import { HtmlRenderer } from "./HtmlRenderer";
 import "./doc.css";
@@ -13,7 +13,11 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const list = await getDocsList();
+  const byYear = await getDocsList(DOCLISTS.YEAR);
+  const byRegion = await getDocsList(DOCLISTS.REGION);
+  const byNationality = await getDocsList(DOCLISTS.NATIONALITY);
+
+  const list = [...byYear,...byRegion,...byNationality]
   return list.map(({ slug }) => ({
     slug:
       process.env.NODE_ENV === "production" ? slug : encodeURIComponent(slug), // production auto encodes

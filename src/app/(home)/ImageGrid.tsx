@@ -57,7 +57,7 @@ export function ImageGrid(props: ImageGridProps) {
   useEffect(() => {
     let currentPosition = 0;
     let animationFrameId: number;
-    const scrollStep = 0.3;
+    const scrollStep = 0.2;
   
     const animateScroll = () => {
       if (innerContainerRef.current) {
@@ -81,8 +81,8 @@ export function ImageGrid(props: ImageGridProps) {
   return (
     <div
       ref={containerRef}
-      className={clsx(className)}
-      style={{ margin: `${gap}px`, height: gridHeight, overflowY: "hidden", willChange: "transform" }}
+      className={clsx(className, "h-full")}
+      style={{ margin: `${gap}px`, height: `100%`, overflowY: "hidden", willChange: "transform" }}
     >
       <div
         className="grid h-full relative"
@@ -100,7 +100,7 @@ export function ImageGrid(props: ImageGridProps) {
           {layout.map(({ image, span }) => (
             <motion.div
               key={`${image.filename}`}
-              className="relative h-full w-full"
+              className="relative h-full w-full px-1 mb-20"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -109,20 +109,26 @@ export function ImageGrid(props: ImageGridProps) {
                 maxHeight: rowHeight,
               }}
             >
-              <Image
-                className="h-full object-cover select-none pointer-events-none"
-                src={`img/${image.filename}`}
-                alt={image.displayName}
-                width={image.width}
-                height={image.height}
-                placeholder="blur"
-                blurDataURL={image.blurDataURL}
-                quality={70}
-                priority
-              />
-              <p className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 px-[1px] text-center text-[10px] bg-stone-900/70 text-white min-w-[100%]`}>
-                {image.displayName}
-              </p>
+              <div className="relative h-full w-full bg-gradient-to-br from-stone-800 to-stone-900 shadow-[0_8px_30px_rgb(0,0,0,0.3)] border-4 border-stone-700">
+                <div className="relative h-[calc(100%)] w-full">
+                  <Image
+                    className="h-full w-full object-cover select-none pointer-events-none relative z-0"
+                    src={`img/${image.filename}`}
+                    alt={image.displayName}
+                    width={image.width}
+                    height={image.height}
+                    placeholder="blur"
+                    blurDataURL={image.blurDataURL}
+                    quality={70}
+                    priority
+                  />
+                </div>
+                <div className="absolute bottom-[-50px] left-0 right-0 h-6 flex items-center justify-center z-20">
+                  <p className="text-[10px] text-white text-center px-2 wrap">
+                    {image.displayName}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           ))}
         </AnimatePresence>

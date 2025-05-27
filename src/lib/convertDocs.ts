@@ -2,12 +2,21 @@ import path from "path";
 import { glob } from "glob";
 import nodePandoc from "node-pandoc";
 
-export async function getDocsList(): Promise<DocumentInfo[]> {
-  const docsDirectory = path.resolve(process.cwd(), "docs");
+export enum DOCLISTS {
+  ROOT = "docs",
+  NATIONALITY = "docs/BYNATIONALITY",
+  YEAR = "docs/BYYEAR",
+  REGION = "docs/BYREGION"
+}
+
+export async function getDocsList(dir: string): Promise<DocumentInfo[]> {
+  console.log(dir)
+  const docsDirectory = path.resolve(process.cwd(), dir);
   const files = await glob("*.docx", { cwd: docsDirectory });
   return files
     .map((filename) => ({
       filename,
+      directory: dir,
       title: formatTitle(filename),
       slug: formatSlug(filename),
     }))
@@ -31,14 +40,19 @@ function sortDocsList(a: DocumentInfo, b: DocumentInfo) {
 }
 
 export async function getDocBySlug(slug: string): Promise<ConversionResult> {
-  const list = await getDocsList();
-  const docInfo = findDocInfoBySlug(slug, list);
+  let docInfo = undefined;
+  
+  for(const dir of Object.values(DOCLISTS)) {
+    const list = await getDocsList(dir);
+    docInfo = findDocInfoBySlug(slug, list);
+    if(docInfo) break;
+  }
 
   if (!docInfo) {
     throw new Error(`No document found for slug: ${slug}`);
   }
 
-  const docsDirectory = path.resolve(process.cwd(), "docs");
+  const docsDirectory = path.resolve(process.cwd(), docInfo.directory);
   const filePath = path.resolve(docsDirectory, docInfo.filename);
   const content = await new Promise<string>((resolve, reject) => {
     nodePandoc(filePath, "-f docx -t html5", (error, result) => {
@@ -62,6 +76,7 @@ function findDocInfoBySlug(slug: string, list: DocumentInfo[]) {
 
 export interface DocumentInfo {
   filename: string;
+  directory: string;
   slug: string;
   title: string;
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DocumentInfo, getDocsList } from "@/lib/convertDocs";
+import { DOCLISTS, DocumentInfo, getDocsList } from "@/lib/convertDocs";
 import { partition } from "lodash-es";
 import clsx from "clsx";
 
@@ -13,19 +13,33 @@ export function generateMetadata() {
 }
 
 export default async function ListsPage() {
-  const list = await getDocsList();
+  const byYear = await getDocsList(DOCLISTS.YEAR);
+  const byRegion = await getDocsList(DOCLISTS.REGION);
+  const byNationality = await getDocsList(DOCLISTS.NATIONALITY);
+  // const list = await getDocsList();
 
-  const [byYear, rest] = partition(list, (doc) => /19\d{2}/.test(doc.title));
+  // const [byYearTemp, rest] = partition(list, (doc) => /19\d{2}/.test(doc.title));
+  // byYearTemp.filter((val) => val.title.startsWith("Русские")).forEach((val) => rest.push(val))
+  // const byYear = byYearTemp.filter((val) => !val.title.startsWith("Русские"))
 
-  const [byRegion, byNationality] = partition(rest, (doc) =>
-    doc.slug.startsWith("женщины")
-  );
+  // rest.sort((a,b) => a.title.localeCompare(b.title))
+
+  // const [byRegion, byNationality] = partition(rest, (doc) =>
+  //   doc.slug.startsWith("женщины")
+  // );
 
   return (
     <section className="page-container">
       <div className="grid sm:grid-cols-3 py-12 sm:py-16 gap-6">
         <h1 className="h1">Списки убитых</h1>
-        <div>
+        <div className="sm:col-span-2">
+          <ListSection 
+            byNationality={byNationality}
+            byRegion={byRegion}
+            byYear={byYear}
+          />
+        </div>
+        {/* <div>
           <h2 className="mb-5 font-semibold">Списки по национальностям</h2>
           <ListSection list={byNationality} />
         </div>
@@ -38,22 +52,26 @@ export default async function ListsPage() {
             <h2 className="mb-5 font-semibold">Списки по годам</h2>
             <ListSection list={byYear} />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
 }
 
+
 function ListSection({
-  list,
+  byNationality,
+  byRegion,
+  byYear,
   className,
 }: {
-  list: DocumentInfo[];
+  byNationality: DocumentInfo[],
+  byRegion: DocumentInfo[],
+  byYear: DocumentInfo[],
   className?: string;
 }) {
-  return (
-    <ul className={clsx(className)}>
-      {list.map((doc) => (
+
+  const listItem = (doc: DocumentInfo) => (
         <li key={doc.slug} className="mb-2">
           <Link
             href={`/lists/${doc.slug}`}
@@ -63,7 +81,18 @@ function ListSection({
             {doc.title}
           </Link>
         </li>
-      ))}
+      )
+
+  return (
+    <ul className={clsx("columns-3",className)}>
+      {[<li className="text-1xl font-semibold tracking-tight pb-4" key="by_nationality_title">Списки по национальностям</li>,
+      ...byNationality.map(listItem),
+      <li className="text-1xl font-semibold tracking-tight pt-8 pb-4" key="by_region_title">Списки по регионам</li>,
+      ...byRegion.map(listItem),
+      <li className="text-1xl font-semibold tracking-tight pt-8 pb-4" key="by_year_title">Списки по годам</li>,
+      ...byYear.map(listItem),
+    ]
+      }
     </ul>
   );
 }

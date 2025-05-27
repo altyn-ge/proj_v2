@@ -17,6 +17,7 @@ export function Header() {
     { path: "/", label: "Главная" },
     { path: "/lists", label: "Списки убитых" },
     { path: "/about", label: "От автора" },
+    { path: "/summary", label: "Сводная таблица" },
     { path: "/contact", label: "Оставьте сообщение" },
   ];
 
