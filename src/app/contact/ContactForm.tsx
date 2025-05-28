@@ -103,32 +103,27 @@ export function ContactFormNew() {
     >
       <div className="grid grid-cols-2 items-start">
         <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4">
-        <span>Представьтесь <span className="text-red-600">*</span></span>
+        <span>Ваше имя <span className="text-red-600">*</span></span>
         </label>
         <input name="name" required className="w-full border rounded px-3 py-2" />
 
         <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4">
-          <span>Введите корректный email<span className="text-red-600">*</span></span>
+          <span>Адрес электронной почты<span className="text-red-600">*</span></span>
         </label>
         <input name="email" type="email" required className="w-full border rounded px-3 py-2" />
 
         <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4">
-          Город/регион
+          Страна/Регион/Населенный пункт
         </label>
         <input name="city" className="w-full border rounded px-3 py-2" />
 
         <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4">
-          Организация
+          Организация/Должность
         </label>
         <input name="organization" className="w-full border rounded px-3 py-2" />
 
         <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4">
-          Должность
-        </label>
-        <input name="position" className="w-full border rounded px-3 py-2" />
-
-        <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4">
-          <span>Тема<span className="text-red-600">*</span></span>
+          <span>Тема (выбрать)<span className="text-red-600">*</span></span>
         </label>
         <select
           name="subject"
@@ -136,13 +131,13 @@ export function ContactFormNew() {
           onChange={e => setSubject(e.target.value)}
           className="w-full border rounded px-3 py-2"
         >
-          <option value="Выражение благодарности">Выражение благодарности</option>
-          <option value="Исправление ошибки ввода">Исправление ошибки ввода</option>
+          <option value="Поправка (укажите список и имя)">Поправка (укажите список и имя)</option>
+          <option value="Новое имя (введите детали и источник)">Новое имя (введите детали и источник)</option>
           <option value="Другое">Другое</option>
         </select>
 
         <label className="text-lg font-normal text-black flex flex-col gap-2 items-start pr-4 mt-2">
-          <span>Ваше сообщение напишите здесь<span className="text-red-600">*</span></span>
+          <span>Сообщение<span className="text-red-600">*</span></span>
         </label>
         <textarea
           name="message"
@@ -160,9 +155,9 @@ export function ContactFormNew() {
         </button>
       </div>
       <div className="text-sm mt-2">
-        <span>Поля, помеченные звездочкой </span>
+        <span>Поля, помеченные звездочкой (</span>
         <span className="text-red-600">*</span>
-        <span>, должны быть заполнены.</span>
+        <span>), должны быть заполнены.</span>
       </div>
       {result === true && (
         <div className="text-green-700 font-semibold mt-2">Сообщение отправлено!</div>

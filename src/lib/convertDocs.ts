@@ -10,7 +10,6 @@ export enum DOCLISTS {
 }
 
 export async function getDocsList(dir: string): Promise<DocumentInfo[]> {
-  console.log(dir)
   const docsDirectory = path.resolve(process.cwd(), dir);
   const files = await glob("*.docx", { cwd: docsDirectory });
   return files
@@ -57,7 +56,7 @@ export async function getDocBySlug(slug: string): Promise<ConversionResult> {
   const content = await new Promise<string>((resolve, reject) => {
     nodePandoc(filePath, "-f docx -t html5 --extract-media=public", (error, result) => {
       if (error) reject(error);
-      const adjustedHtml = result.replace('src="public/media/', 'src="/media/');
+      const adjustedHtml = result.replace('src="public/media/', 'src="media/');
       resolve(adjustedHtml);
     });
   });

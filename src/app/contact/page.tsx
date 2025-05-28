@@ -14,8 +14,7 @@ export default async function ContactPage() {
         <div className="max-w-6xl mx-auto">
           <h1 className="h1 mb-5">Оставьте сообщение</h1>
           <p className="max-w-[500px]">
-            This is some supporting text explaining the purpose of this form and
-            how the responses will be used.
+            
           </p>
         </div>
       </div>
