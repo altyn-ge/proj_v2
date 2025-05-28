@@ -12,6 +12,13 @@ const nextConfig: NextConfig = {
     EMAILJS_SERVICE_ID: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
     EMAILJS_TEMPLATE_ID: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.txt$/,
+      use: 'raw-loader',
+    });
+    return config;
+  },
 };
 
 export default nextConfig;

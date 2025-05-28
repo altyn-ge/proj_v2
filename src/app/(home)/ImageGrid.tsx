@@ -14,7 +14,7 @@ interface ImageGridProps {
 const rowHeight = 160;
 const rowCount = 3;
 const gap = 0;
-const gridHeight = rowHeight * rowCount + gap * (rowCount - 1);
+// const gridHeight = rowHeight * rowCount + gap * (rowCount - 1);
 
 export function ImageGrid(props: ImageGridProps) {
   const { images, className } = props;

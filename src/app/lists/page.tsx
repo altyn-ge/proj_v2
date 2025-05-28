@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { DOCLISTS, DocumentInfo, getDocsList } from "@/lib/convertDocs";
-import { partition } from "lodash-es";
+// import { partition } from "lodash-es";
 import clsx from "clsx";
 
 export const dynamic = "force-static";

@@ -1,8 +1,8 @@
 import { getImages } from "@/lib/getImages";
 import { ImageGrid } from "./ImageGrid";
 import { DeathSentenceList } from "./DeathSentenceList";
-import clsx from "clsx";
-import Link from "next/link";
+// import clsx from "clsx";
+// import Link from "next/link";
 
 export function generateMetadata() {
   return {
@@ -39,24 +39,24 @@ export default async function Home() {
   );
 }
 
-type HomeTileProps = {
-  title: string;
-  href: string;
-  className?: string;
-};
+// type HomeTileProps = {
+//   title: string;
+//   href: string;
+//   className?: string;
+// };
 
-function HomeTile(props: HomeTileProps) {
-  const { title, href, className } = props;
-  return (
-    <Link className="text-foreground" href={href}>
-      <div
-        className={clsx(
-          "w-full border min-h-[150px] lg:min-h-[250px]",
-          className
-        )}
-      >
-        {title}
-      </div>
-    </Link>
-  );
-}
+// function HomeTile(props: HomeTileProps) {
+//   const { title, href, className } = props;
+//   return (
+//     <Link className="text-foreground" href={href}>
+//       <div
+//         className={clsx(
+//           "w-full border min-h-[150px] lg:min-h-[250px]",
+//           className
+//         )}
+//       >
+//         {title}
+//       </div>
+//     </Link>
+//   );
+// }

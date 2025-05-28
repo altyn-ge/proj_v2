@@ -1,24 +1,15 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import deathSentences from '../../../public/death_sentence_exerpts.txt?raw';
 
 export function DeathSentenceList() {
   const [excerpts, setExcerpts] = useState<string[]>([]);
   const innerContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/death_sentence_exerpts.txt") 
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then(text => {
-        const lines = text.split('\n').filter(line => line.trim() !== '');
-        setExcerpts(lines);
-      })
-      .catch(error => console.error('Error fetching death sentence excerpts:', error));
+    const lines = deathSentences.split('\n').filter(line => line.trim() !== '');
+    setExcerpts(lines);
   }, []);
 
   useEffect(() => {
@@ -28,7 +19,7 @@ export function DeathSentenceList() {
   
     const animateScroll = () => {
       if (innerContainerRef.current) {
-        const containerHeight = innerContainerRef.current.parentElement?.offsetHeight || 0;
+        // const containerHeight = innerContainerRef.current.parentElement?.offsetHeight || 0;
         const contentHeight = innerContainerRef.current.scrollHeight / 2;
         
         // Reset position when we've scrolled through one set of content

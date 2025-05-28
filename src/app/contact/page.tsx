@@ -1,4 +1,4 @@
-import { ContactForm, ContactFormNew } from "./ContactForm";
+import { ContactFormNew } from "./ContactForm";
 
 export function generateMetadata() {
   return {

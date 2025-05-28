@@ -1,3 +1,6 @@
+import { getDocBySlug } from "@/lib/convertDocs";
+import { HtmlRenderer } from "../lists/[slug]/HtmlRenderer";
+
 export function generateMetadata() {
   return {
     title: "От Aвтора | Казни женщин в России ",
@@ -5,7 +8,35 @@ export function generateMetadata() {
   };
 }
 
-export default async function AboutPage() {
+export default async function AboutPageNew() {
+  const content = (await getDocBySlug("вступительное-слово")).data?.content
+  return (
+    <section className="page-container mx-auto max-w-5xl py-12 sm:py-16">
+      <h1 className="text-lg mb-6">От aвтора</h1>
+
+      <h2 className="h1 mb-10">
+        Почему мы должны помнить имена женщин, расстрелянных и погибших в
+        российский тюрьмах и лагерях
+      </h2>
+
+      <blockquote className="border-l-2 pl-6 mb-8" style={{ marginLeft: '40rem' }}>
+        <p className="mb-4">
+          “Говорят, мы мелко пашем, Оступаясь и скользя На природной почве нашей
+          Глубже и пахать нельзя Мы ведь пашем на погосте, Разрыхляем верхний
+          слой. Мы задеть боимся кости, Чуть прикрытые землей”
+        </p>
+        <p className="text-sm text-text-secondary">В.Шаламов</p>
+      </blockquote>
+
+      <div className="flex flex-col gap-4">
+        <HtmlRenderer html={content!} className="[&>p]:p-2"/>
+      </div>
+    </section>
+  );
+}
+
+
+export async function AboutPage() {
   return (
     <section className="page-container mx-auto max-w-5xl py-12 sm:py-16">
       <h1 className="text-lg mb-6">От aвтора</h1>
