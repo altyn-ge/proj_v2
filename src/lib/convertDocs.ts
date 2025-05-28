@@ -1,6 +1,7 @@
 import path from "path";
 import { glob } from "glob";
 import nodePandoc from "node-pandoc";
+import nextConfig from "../../next.config";
 
 export enum DOCLISTS {
   ROOT = "docs",
@@ -54,9 +55,9 @@ export async function getDocBySlug(slug: string): Promise<ConversionResult> {
   const docsDirectory = path.resolve(process.cwd(), docInfo.directory);
   const filePath = path.resolve(docsDirectory, docInfo.filename);
   const content = await new Promise<string>((resolve, reject) => {
-    nodePandoc(filePath, "-f docx -t html5 --extract-media=public", (error, result) => {
+    nodePandoc(filePath, `-f docx -t html5 --extract-media=public/docx/${docInfo.slug}`, (error, result) => {
       if (error) reject(error);
-      const adjustedHtml = result.replace('src="public/media/', 'src="media/');
+      const adjustedHtml = result.replace(/src="public\/docx/g, `src="${nextConfig.basePath}/docx`);
       resolve(adjustedHtml);
     });
   });
