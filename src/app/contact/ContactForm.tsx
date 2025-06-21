@@ -61,6 +61,7 @@ export function ContactForm() {
 }
 
 async function sendEmail(form: EventTarget & HTMLFormElement) {
+  console.log(form);
   try { 
     const result = await emailjs.sendForm(
       process.env.EMAILJS_SERVICE_ID!,
@@ -68,6 +69,8 @@ async function sendEmail(form: EventTarget & HTMLFormElement) {
       form,
       process.env.EMAILJS_PUBLIC_KEY
     );
+
+    // console.log(result);
 
     if (result.status === 200) {
       return { success: true };
@@ -84,16 +87,18 @@ export function ContactFormNew() {
   const [isSending, setIsSending] = useState(false);
   const [result, setResult] = useState<boolean | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    setResult(null);
+
+    event.preventDefault();
     setIsSending(true);
-    // Simulate sending
-    setTimeout(() => {
-      setResult(true);
-      setIsSending(false);
-      e.currentTarget.reset();
-    }, 1000);
-  };
+    const response = await sendEmail(event.currentTarget);
+    if (response.success) {
+      (event.target as HTMLFormElement).reset();
+    }
+    setResult(response.success);
+    setIsSending(false);
+  }
 
   return (
     <form

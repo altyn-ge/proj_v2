@@ -55,7 +55,7 @@ export function ImageGrid(props: ImageGridProps) {
   const innerContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let currentPosition = 0;
+    let currentPosition =  parseInt(localStorage.getItem("image_scroll_position") ?? "0");
     let animationFrameId: number;
     const scrollStep = 0.2;
   
@@ -69,6 +69,7 @@ export function ImageGrid(props: ImageGridProps) {
           currentPosition += scrollStep;
         }
         innerContainerRef.current.style.transform = `translateY(-${currentPosition}px)`;
+        localStorage.setItem("image_scroll_position", currentPosition.toString())
       }
       animationFrameId = requestAnimationFrame(animateScroll);
     };

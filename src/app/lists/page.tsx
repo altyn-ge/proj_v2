@@ -39,20 +39,6 @@ export default async function ListsPage() {
             byYear={byYear}
           />
         </div>
-        {/* <div>
-          <h2 className="mb-5 font-semibold">Списки по национальностям</h2>
-          <ListSection list={byNationality} />
-        </div>
-        <div className="flex flex-col gap-6">
-          <div>
-            <h2 className="mb-5 font-semibold">Списки по область</h2>
-            <ListSection list={byRegion} />
-          </div>
-          <div>
-            <h2 className="mb-5 font-semibold">Списки по годам</h2>
-            <ListSection list={byYear} />
-          </div>
-        </div> */}
       </div>
     </section>
   );
@@ -84,15 +70,41 @@ function ListSection({
       )
 
   return (
-    <ul className={clsx("columns-3",className)}>
-      {[<li className="text-1xl font-semibold tracking-tight pb-4" key="by_nationality_title">Списки по национальностям</li>,
-      ...byNationality.map(listItem),
-      <li className="text-1xl font-semibold tracking-tight pt-8 pb-4" key="by_region_title">Списки по регионам</li>,
-      ...byRegion.map(listItem),
-      <li className="text-1xl font-semibold tracking-tight pt-8 pb-4" key="by_year_title">Списки по годам</li>,
-      ...byYear.map(listItem),
-    ]
-      }
-    </ul>
+    <div className="inline-flex divide-x border-x">
+      <div>
+        <p className="text-1xl font-semibold tracking-tight pb-4 mx-auto w-fit px-4" key="by_nationality_title">Списки по национальностям</p>
+        <ul className={clsx("columns-2  px-4",className)}>
+            {byNationality.map(listItem)}
+        </ul>
+      </div>
+
+      <div>
+        <p className="text-1xl font-semibold tracking-tight pb-4 mx-auto w-fit px-4" key="by_nationality_title">Списки по регионам</p>
+        <ul className={clsx("columns-1  px-4",className)}>
+            {byRegion.map(listItem)}
+        </ul>
+      </div>
+
+
+      <div>
+        <p className="text-1xl font-semibold tracking-tight pb-4 mx-auto w-fit px-4" key="by_nationality_title">Списки по годам</p>
+        <ul className={clsx("columns-1 px-4",className)}>
+            {byYear.map(listItem)}
+        </ul>
+      </div>
+
+    </div>
   );
 }
+
+
+    //   <ul className={clsx("columns-3",className)}>
+    //     {[<li className="text-1xl font-semibold tracking-tight pb-4" key="by_nationality_title">Списки по национальностям</li>,
+    //     ...byNationality.map(listItem),
+    //     <li className="text-1xl font-semibold tracking-tight pt-8 pb-4" key="by_region_title">Списки по регионам</li>,
+    //     ...byRegion.map(listItem),
+    //     <li className="text-1xl font-semibold tracking-tight pt-8 pb-4" key="by_year_title">Списки по годам</li>,
+    //     ...byYear.map(listItem),
+    //   ]
+    //   }
+    // </ul>

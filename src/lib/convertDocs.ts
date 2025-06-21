@@ -57,7 +57,7 @@ export async function getDocBySlug(slug: string): Promise<ConversionResult> {
   const content = await new Promise<string>((resolve, reject) => {
     nodePandoc(filePath, `-f docx -t html5 --extract-media=public/docx/${docInfo.slug}`, (error, result) => {
       if (error) reject(error);
-      const adjustedHtml = result.replace(/src="public\/docx/g, `src="${nextConfig.basePath}/docx`);
+      const adjustedHtml = result.replace(/src="public\/docx/g, `class="word-image" src="${nextConfig.basePath}/docx`);
       resolve(adjustedHtml);
     });
   });
