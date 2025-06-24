@@ -21,6 +21,7 @@ export async function getDocsList(dir: string): Promise<DocumentInfo[]> {
       slug: formatSlug(filename),
     }))
     .sort(sortDocsList);
+
 }
 
 function formatTitle(filename: string) {
@@ -36,6 +37,8 @@ function formatSlug(filename: string) {
 }
 
 function sortDocsList(a: DocumentInfo, b: DocumentInfo) {
+  if(a.title.startsWith("Национальность неизвестна")) return 1
+  if(b.title.startsWith("Национальность неизвестна")) return -1
   return a.title.localeCompare(b.title, "ru", { sensitivity: "base" });
 }
 
