@@ -9,22 +9,15 @@ export function generateMetadata() {
 
 export default async function ContactPage() {
   return (
-    <section>
-      <div className="page-container py-12 sm:py-16 bg-layer">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="h1 mb-5">Оставьте сообщение</h1>
-          <p className="max-w-[500px]">
-            
-          </p>
-        </div>
-      </div>
-
-      <div className="page-container py-16">
-        <div className="max-w-6xl mx-auto">
+    <div className="page-container mx-auto py-12 sm:py-16">
+      <div className="flex flex-row items-start gap-x-[10rem]">
+      <h1 className="h1">Оставьте <br/> сообщение</h1>
+      <div className="max-w-5xl">
+        <div className="mb-10">
           <ContactFormNew />
-          {/* <ContactForm /> */}
         </div>
       </div>
-    </section>
+      </div>
+    </div>
   );
 }

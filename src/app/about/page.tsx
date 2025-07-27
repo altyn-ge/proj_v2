@@ -3,7 +3,7 @@ import { HtmlRenderer } from "../lists/[slug]/HtmlRenderer";
 
 export function generateMetadata() {
   return {
-    title: "От Aвтора | Казни женщин в России ",
+    title: "О Проекте | Казни женщин в России ",
     description: ``,
   };
 }
@@ -11,9 +11,12 @@ export function generateMetadata() {
 export default async function AboutPageNew() {
   const content = (await getDocBySlug("вступительное-слово")).data?.content
   return (
-    <section className="page-container mx-auto max-w-5xl py-12 sm:py-16">
-      <h1 className="text-lg mb-6">От aвтора</h1>
+    <section className="page-container mx-auto py-12 sm:py-16">
+      <div className="flex flex-row items-start gap-x-[10rem]">
+        
+      <h1 className="h1 mb-6">О проекте</h1>
 
+      <div className="max-w-5xl">
       <h2 className="h1 mb-10">
         Почему мы должны помнить имена женщин, расстрелянных и погибших в
         российский тюрьмах и лагерях
@@ -21,20 +24,22 @@ export default async function AboutPageNew() {
 
       <blockquote className="border-l-2 pl-6 mb-8" style={{ marginLeft: '40rem' }}>
         <p className="mb-4">
-          “Говорят, мы мелко пашем, <br/> 
+          Говорят, мы мелко пашем, <br/> 
           Оступаясь и скользя <br/>
           На природной почве нашей <br/>
           Глубже и пахать нельзя <br/>
           Мы ведь пашем на погосте, <br/>
           Разрыхляем верхний слой. <br/>
           Мы задеть боимся кости, <br/>
-          Чуть прикрытые землей”
+          Чуть прикрытые землей.
         </p>
-        <p className="text-sm text-text-secondary">В.Шаламов</p>
+        <p className="text-sm text-text-secondary">В. Шаламов</p>
       </blockquote>
 
       <div className="flex flex-col gap-4">
         <HtmlRenderer html={content!} className="[&>p]:p-2"/>
+      </div>
+      </div>
       </div>
     </section>
   );

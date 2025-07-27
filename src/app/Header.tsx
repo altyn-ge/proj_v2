@@ -15,7 +15,7 @@ export function Header() {
 
   const navItems = [
     { path: "/", label: "Главная" },
-    { path: "/about", label: "От автора" },
+    { path: "/about", label: "О проекте" },
     { path: "/lists", label: "Списки убитых" },
     { path: "/abreviations", label: "Список сокращений" },
     { path: "/contact", label: "Оставьте сообщение" },

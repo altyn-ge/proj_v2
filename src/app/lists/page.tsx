@@ -30,16 +30,17 @@ export default async function ListsPage() {
 
   return (
     <section className="page-container">
-      <div className="grid sm:grid-cols-3 py-12 sm:py-16 gap-6">
-        <h1 className="h1">Списки убитых</h1>
-        <div className="sm:col-span-2">
-          <ListSection 
+      <div className="flex flex-row py-16 gap-x-20 gap-y-6 items-start">
+        <h1 className="h1 col-start-1 col-span-1">Списки убитых</h1>
+        <div className="col-start-2 col-span-2 flex justify-start w-full max-w-xl shrink-0">
+          <ListSection
             byNationality={byNationality}
             byRegion={byRegion}
             byYear={byYear}
           />
         </div>
       </div>
+
     </section>
   );
 }
@@ -70,16 +71,16 @@ function ListSection({
       )
 
   return (
-    <div className="inline-flex divide-x border-x">
+    <div className="flex divide-x border-x">
       <div>
-        <p className="text-1xl font-semibold tracking-tight pb-4 mx-auto w-fit px-4" key="by_nationality_title">Списки по национальностям</p>
+        <p className="text-1xl font-semibold tracking-tight pb-4 px-4" key="by_nationality_title">Списки по национальностям</p>
         <ul className={clsx("columns-2  px-4",className)}>
             {byNationality.map(listItem)}
         </ul>
       </div>
 
       <div>
-        <p className="text-1xl font-semibold tracking-tight pb-4 mx-auto w-fit px-4" key="by_nationality_title">Списки по регионам</p>
+        <p className="text-1xl font-semibold tracking-tight pb-4 px-4" key="by_nationality_title">Списки по регионам</p>
         <ul className={clsx("columns-1  px-4",className)}>
             {byRegion.map(listItem)}
         </ul>
@@ -87,7 +88,7 @@ function ListSection({
 
 
       <div>
-        <p className="text-1xl font-semibold tracking-tight pb-4 mx-auto w-fit px-4" key="by_nationality_title">Списки по годам</p>
+        <p className="text-1xl font-semibold tracking-tight pb-4 px-4" key="by_nationality_title">Списки по годам</p>
         <ul className={clsx("columns-1 px-4",className)}>
             {byYear.map(listItem)}
         </ul>

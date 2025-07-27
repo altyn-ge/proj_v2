@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Libre_Franklin, Lora } from "next/font/google";
 import { Header } from "./Header";
-import { Footer } from "./Footer";
+// import { Footer } from "./Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,7 +37,7 @@ export default function RootLayout({
         <main id="main-content" className="flex-1">
           <div className="mt-[var(--app-header-height)]">{children}</div>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
