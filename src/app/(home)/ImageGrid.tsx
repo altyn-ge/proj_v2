@@ -31,8 +31,8 @@ export function ImageGrid(props: ImageGridProps) {
   useEffect(() => {
     const calculateDimensions = () => {
       if (!containerRef.current) return;
-      const containerWidth = containerRef.current.offsetWidth;
-      const baseImageWidth = rowHeight * 0.75; // Using 3:4 as base ratio
+      // const containerWidth = containerRef.current.offsetWidth;
+      // const baseImageWidth = rowHeight * 0.75; // Using 3:4 as base ratio
       const cols = 5; // Math.max(1, Math.floor(containerWidth / baseImageWidth));
       setColumnCount(cols);
     };
