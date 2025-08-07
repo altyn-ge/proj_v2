@@ -16,7 +16,7 @@ export async function getImages(): Promise<ImageFile[]> {
   const files = fs.readdirSync(imageDir);
 
   const imagePromises = files
-    .filter((file) => /\.(jpg|jpeg)$/i.test(file))
+    .filter((file) => /\.(jpg|jpeg)$/i.test(file)).slice(0)
     .map(async (filename) => {
       const fullPath = path.join(imageDir, filename);
       const [blurDataURL, dimensions] = await Promise.all([

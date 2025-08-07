@@ -1,6 +1,6 @@
 import { getImages } from "@/lib/getImages";
-import { ImageGrid } from "./ImageGrid";
 import { DeathSentenceList } from "./DeathSentenceList";
+import { ImageGridOptimized } from "./ImageGridOptimized";
 // import clsx from "clsx";
 // import Link from "next/link";
 
@@ -12,7 +12,7 @@ export function generateMetadata() {
 }
 
 export default async function Home() {
-  const allImages = await getImages();
+  const images = await getImages();
   return (
       <section className="bg-[#1b170f] grid md:grid-cols-2 h-[calc(100vh-var(--app-header-height))]">
         <div className="text-layer px-4 sm:px-6 md:px-9 py-10 flex flex-col justify-between">
@@ -47,7 +47,7 @@ export default async function Home() {
           </div>
         </div>
         </div>
-        <ImageGrid images={allImages} />
+        <ImageGridOptimized images={images}/>
       </section>
   );
 }

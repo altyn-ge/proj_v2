@@ -61,23 +61,21 @@ export function ContactForm() {
 }
 
 async function sendEmail(form: EventTarget & HTMLFormElement) {
-  console.log(form);
   try { 
     const result = await emailjs.sendForm(
-      process.env.EMAILJS_SERVICE_ID!,
-      process.env.EMAILJS_TEMPLATE_ID!,
+      "service_cs4jwyl",
+     "template_1v71kjq",
       form,
-      process.env.EMAILJS_PUBLIC_KEY
+      "Sxp0qDhvhu5dDX4dv"
     );
-
-    // console.log(result);
 
     if (result.status === 200) {
       return { success: true };
     }
 
     return { success: false };
-  } catch {
+  } catch (error) {
+    console.log(error);
     return { success: false };
   }
 }
@@ -95,6 +93,8 @@ export function ContactFormNew() {
     const response = await sendEmail(event.currentTarget);
     if (response.success) {
       (event.target as HTMLFormElement).reset();
+    } else {
+      console.log(response)
     }
     setResult(response.success);
     setIsSending(false);
