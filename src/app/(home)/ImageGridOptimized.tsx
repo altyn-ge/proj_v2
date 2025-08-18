@@ -23,24 +23,47 @@ export function ImageGridOptimized(props: ImageGridProps) {
   const [bottomRowEndIndex, setBottomRowEndIndex] = useState(5);
 
   const imageRef = useRef<HTMLDivElement>(null);
+  const animationFrameId = useRef<number>();
+  const position = useRef(0);
 
   const handleScroll = ()=>{
-    if(imageRef.current != null && (imageRef.current.scrollTop + imageRef.current.clientHeight >= imageRef.current.scrollHeight *0.8)){
+    if(imageRef.current != null && (position.current + imageRef.current.clientHeight >= imageRef.current.scrollHeight *0.8)){
       setTopRowEndIndex(prev => prev + 1);
       setBottomRowEndIndex(prev => prev + 1);
     } 
   }
 
-  const scrollFunc = () => {
-    imageRef.current?.scrollBy({top:1, behavior:'smooth'});
-    setTimeout(scrollFunc,100);
-  }
 
   useEffect(()=>{
+    let lastTimestamp = 0;
+
+    const scrollFunc = (timestamp: number) => {
+      try{
+        if(!lastTimestamp) lastTimestamp = timestamp;
+        const delta = timestamp - lastTimestamp;
+
+        const pixelsPerSecond = window.innerHeight / 30;
+        position.current += pixelsPerSecond*delta / 1000;
+        if(imageRef.current)  imageRef.current.scrollTop = position.current;
+        lastTimestamp = timestamp;
+        animationFrameId.current = requestAnimationFrame(scrollFunc);
+      } catch (e){
+        console.log(e);
+      }
+    }
+
     if(imageRef.current){
-      scrollFunc();
+      requestAnimationFrame(scrollFunc);
       imageRef.current?.addEventListener('scroll', handleScroll);
     }
+
+
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      imageRef.current?.removeEventListener('scroll', handleScroll);
+    };
   });
 
   const { layout, rowEndings } = layoutImages(images, 5);
@@ -78,7 +101,7 @@ export function ImageGridOptimized(props: ImageGridProps) {
                 <div className="relative h-[calc(100%)] w-full">
                   <Image
                     className="h-full w-full object-cover select-none pointer-events-none relative z-0"
-                    src={`img/${image.filename}`}
+                    src={`img/${image.filename}`.replaceAll('й','%D0%B9').replaceAll('ё','%D1%91')}
                     alt={image.displayName}
                     width={image.width}
                     height={image.height}
@@ -115,29 +138,29 @@ function layoutImages(images: ImageFile[], columnCount: number): {layout: Layout
     };
   }
 
-  while (currentRow < rowCount) {
-    for (let i = 0; i < images.length; i++) {
-      const image = images[i];
-      const remainingCols = columnCount - currentCol;
-      const colSpan = image.isWide ? 2 : 1;
+  // while (currentRow < rowCount) {
+  for (let i = 0; i < images.length; i++) {
+    const image = images[i];
+    const remainingCols = columnCount - currentCol;
+    const colSpan = image.isWide ? 2 : 1;
 
-      if (colSpan <= remainingCols) {
-        gridCells.push({
-          image,
-          span: colSpan,
-        });
+    if (colSpan <= remainingCols) {
+      gridCells.push({
+        image,
+        span: colSpan,
+      });
 
-        currentCol += colSpan;
-        if (currentCol >= columnCount) {
-          currentRow++;
-          currentCol = 0;
-          rowEndings.push(i+1);
-        }
-
-
-        // if (currentRow >= rowCount) break;
+      currentCol += colSpan;
+      if (currentCol >= columnCount) {
+        currentRow++;
+        currentCol = 0;
+        rowEndings.push(i+1);
       }
+
+
+      // if (currentRow >= rowCount) break;
     }
+    // }
 
     // If we can't fit any more images in this row, move to next row
     if (currentCol < columnCount && currentRow < rowCount) {

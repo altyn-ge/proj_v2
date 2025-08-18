@@ -36,8 +36,11 @@ export default async function AboutPageNew() {
         <p className="text-sm text-text-secondary">В. Шаламов</p>
       </blockquote>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
         <HtmlRenderer html={content!} className="[&>p]:p-2"/>
+        <hr/>
+        <p style={{marginTop:'20px'}}><i>Автор проекта: Сафия Исхакова</i></p>
+        <p><i>Участники проекта: Александр Гессен, Филипп Гессен, Борис Фурман, Женя Фурман, Эрик Харви</i></p>
       </div>
       </div>
       </div>
