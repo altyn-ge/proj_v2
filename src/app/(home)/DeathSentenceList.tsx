@@ -15,7 +15,7 @@ export function DeathSentenceList() {
   useEffect(() => {
     let currentPosition = 0;
     let animationFrameId: number;
-    const scrollStep = 0.1;
+    const scrollStep = 0.2;
   
     const animateScroll = () => {
       if (innerContainerRef.current) {

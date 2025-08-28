@@ -8,6 +8,7 @@ export interface ImageFile {
   blurDataURL: string;
   width: number;
   height: number;
+  index: number;
   isWide: boolean;
 }
 
@@ -33,11 +34,17 @@ export async function getImages(): Promise<ImageFile[]> {
         blurDataURL,
         width: dimensions.width,
         height: dimensions.height,
+        index: 0,
         isWide,
       };
     });
 
-  return Promise.all(imagePromises);
+  return Promise.all(imagePromises).then((images) => {
+    return images.map((im,idx) => {
+      im.index = idx;
+      return im;
+    });
+  });
 }
 
 async function generateBlurPlaceholder(imagePath: string): Promise<string> {
