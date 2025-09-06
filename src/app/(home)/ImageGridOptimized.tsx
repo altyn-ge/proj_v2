@@ -9,7 +9,7 @@ const rowHeight = 160;
 const gap = 0;
 // const gridHeight = rowHeight * rowCount + gap * (rowCount - 1);
 // const rowsPerScreen = 100;
-const columnsPerScreen = 4;
+const columnsPerScreen = 5;
 
 
 interface ImageGridProps {
@@ -21,25 +21,54 @@ export function ImageGridOptimized(props: ImageGridProps) {
 
   const {images} = props;
 
-  const [topRow, setTopRow] = useState(0);
+  const [bottomRow, setBottomRow] = useState(5);
 
   const imageRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>();
   const position = useRef(0);
-
-  const handleScroll = ()=>{
-    if(imageRef.current != null && (position.current >= rowHeight + 80 )){
-      setTopRow(prev => {
-        position.current = 0;
-        imgs = getImagesToRender(prev +1);
-        imageRef.current!.scrollTo({top:position.current});
-        return prev + 1;
-      });
-    }
-  }
+  const moveSinceLastUpdate = useRef(0);
+  const { layout, rowEndings } = layoutImages(images, columnsPerScreen);
 
   useEffect(()=>{
     let lastTimestamp = 0;
+
+    
+    const lastPosition = Number.parseFloat(localStorage.getItem('lastPosition') ?? '0');
+    const lastBottomRow = Number.parseInt(localStorage.getItem('lastBottomRow') ?? '5');
+    const lastMoveSinceLastUpdate = Number.parseFloat(localStorage.getItem('lastMoveSinceLastUpdate') ?? '0');
+
+    position.current = lastPosition;
+    moveSinceLastUpdate.current = lastMoveSinceLastUpdate;
+    setBottomRow(lastBottomRow);
+
+    const handleScroll = ()=>{
+      if(imageRef.current != null && (moveSinceLastUpdate.current >= rowHeight + 80 )){
+        setBottomRow(prev => {
+          if(position.current >= rowEndings.length*(rowHeight)){
+            imgs = getImagesToRender(5);
+            position.current = 0;
+            moveSinceLastUpdate.current = 0;
+
+            localStorage.setItem('lastPosition',position.current.toString());
+            localStorage.setItem('lastMoveSinceLastUpdate',moveSinceLastUpdate.current.toString());
+            localStorage.setItem('lastBottomRow',(5).toString());
+
+            return 5;
+          }else {
+            imgs = getImagesToRender(prev +1);
+            moveSinceLastUpdate.current = 0;
+
+            localStorage.setItem('lastPosition',position.current.toString());
+            localStorage.setItem('lastMoveSinceLastUpdate',moveSinceLastUpdate.current.toString());
+            localStorage.setItem('lastBottomRow',(prev+1).toString());
+
+            return prev + 1;
+          }
+        });
+      }
+      
+    }
+
 
     const scrollFunc = (timestamp: number) => {
       try{
@@ -48,6 +77,7 @@ export function ImageGridOptimized(props: ImageGridProps) {
 
         const pixelsPerSecond = window.innerHeight/30;
         position.current += pixelsPerSecond*delta / 1000;
+        moveSinceLastUpdate.current += pixelsPerSecond*delta / 1000;
         if(imageRef.current){
           // imageRef.current.style.transform = `translateY(${-position.current}px)`;
           imageRef.current.scrollTop = position.current;
@@ -63,7 +93,7 @@ export function ImageGridOptimized(props: ImageGridProps) {
 
     if(imageRef.current){
       requestAnimationFrame(scrollFunc);
-    //   imageRef.current?.addEventListener('scroll', handleScroll);
+    //   imageRef.current?.addEventList ener('scroll', handleScroll);
     }
 
 
@@ -75,27 +105,15 @@ export function ImageGridOptimized(props: ImageGridProps) {
     };
   });
 
-  const { layout, rowEndings } = layoutImages(images, columnsPerScreen);
-
-  const getImagesToRender = (topRow: number) => {
-    const totalRows = rowEndings.length - 1;
-    const rowsPerScreen = Math.ceil((imageRef.current?.clientHeight ?? 400) / rowHeight);
-    const topRowCurr = (topRow) % totalRows;
-    const bottomRow = (topRow + rowsPerScreen) % totalRows;
-    console.log(topRowCurr,bottomRow, totalRows)
-    if(topRowCurr < bottomRow) return layout.slice(rowEndings[topRowCurr], rowEndings[bottomRow]);
-
-    return [
-      ...layout.slice(rowEndings[topRowCurr]),
-      ...layout.slice(0,rowEndings[bottomRow]),
-    ];
+  const getImagesToRender = (bottomRow: number) => {
+    return layout.slice(0,rowEndings[bottomRow]);
   }
 
-  let imgs = getImagesToRender(topRow);
+  let imgs = getImagesToRender(bottomRow);
 
   useEffect(() => {
-    console.log(topRow);
-  }, [topRow]);
+    console.log(bottomRow);
+  }, [bottomRow]);
 
   return (
       <div
