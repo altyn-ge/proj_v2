@@ -32,6 +32,7 @@ useEffect(()=>{
         const pixelsPerSecond = windowHeight ? windowHeight/windowsPerSecond : window.innerHeight/windowsPerSecond;
         windowHeight ??= window.innerHeight;
         hasReachedEnd ??= (p: number) => {
+            if(!contentRef.current) false;
             return p > (contentRef.current!.scrollHeight - (windowHeight ?? window.innerHeight));
         }
         const onScrollActual = (p: number) => {
@@ -44,7 +45,7 @@ useEffect(()=>{
         }
         
         const scrollFunc = (timestamp: number) => {
-        
+          if(!contentRef.current) return;
           try{
             if(!lastTimestamp) lastTimestamp = timestamp;
             const delta = timestamp - lastTimestamp;
