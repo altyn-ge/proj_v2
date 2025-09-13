@@ -32,7 +32,7 @@ useEffect(()=>{
         const pixelsPerSecond = windowHeight ? windowHeight/windowsPerSecond : window.innerHeight/windowsPerSecond;
         windowHeight ??= window.innerHeight;
         hasReachedEnd ??= (p: number) => {
-            if(!contentRef.current) false;
+            if(!contentRef.current) return false;
             return p > (contentRef.current!.scrollHeight - (windowHeight ?? window.innerHeight));
         }
         const onScrollActual = (p: number) => {
