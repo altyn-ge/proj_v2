@@ -1,6 +1,6 @@
 import { getImages } from "@/lib/getImages";
 import { DeathSentenceList } from "./DeathSentenceList";
-import { ImageGridOptimized } from "./ImageGridOptimized";
+import { ImageGrid } from "@/components/image_grid/ImageGrid";
 // import clsx from "clsx";
 // import Link from "next/link";
 
@@ -47,7 +47,7 @@ export default async function Home() {
           </div>
         </div>
         </div>
-        <ImageGridOptimized images={images}/>
+        <ImageGrid images={images}/>
       </section>
   );
 }
