@@ -75,7 +75,7 @@ async function sendEmail(form: EventTarget & HTMLFormElement) {
 
     return { success: false };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { success: false };
   }
 }
@@ -94,7 +94,6 @@ export function ContactFormNew() {
     if (response.success) {
       (event.target as HTMLFormElement).reset();
     } else {
-      console.log(response)
     }
     setResult(response.success);
     setIsSending(false);
