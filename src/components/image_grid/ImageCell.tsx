@@ -9,7 +9,10 @@ export const ImageCell: React.FC<{
   rowHeight?: number; // fixed tile height in px (same for all images)
 }> = ({ cell, ioRoot, rowHeight = 220 }) => {
   const { image, span } = cell;
-  const safeSrc = useMemo(() => encodePath(`img/${image.filename}`), [image.filename]);
+  const safeSrc = useMemo(() => {
+    const normalized = image.filename.normalize('NFC');
+    return encodePath(`img/${normalized}`);
+  }, [image.filename]);
   const [visible, setVisible] = useState(false);
 //   const [loaded, setLoaded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);

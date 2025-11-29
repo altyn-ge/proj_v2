@@ -5,7 +5,13 @@ import deathSentences from '../../../public/death_sentence_exerpts.txt?raw';
 import { AutomatedScrollView } from "./AutomatedScrollView";
 import { useScrollPosition } from "../../hooks/useScrollPosition";
 
-export function DeathSentenceList() {
+export interface DeathSentenceListProps {
+  className?: string;
+}
+
+export function DeathSentenceList({
+  className
+}: DeathSentenceListProps) {
   const [excerpts, setExcerpts] = useState<string[]>([]);
   const { savedPosition, isLoaded, savePosition } = useScrollPosition({
     key: 'deathSentencesScrollPosition',
@@ -35,7 +41,8 @@ export function DeathSentenceList() {
         height: 300,
         margin: '0 10px 10px',
         position: 'relative'
-      }}>
+      }}
+      className={className}>
       <span style={{
         position: 'absolute',
         inset: 0,

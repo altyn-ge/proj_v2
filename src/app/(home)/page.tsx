@@ -15,7 +15,7 @@ export default async function Home() {
   const images = await getImages();
   return (
       <section className="bg-[#1b170f] grid md:grid-cols-2 h-[calc(100vh-var(--app-header-height))]">
-        <div className="text-layer px-4 sm:px-6 md:px-9 py-10 flex flex-col justify-between">
+        <div className="text-layer px-4 sm:px-6 md:px-9 py-10 flex flex-col justify-between bg-[#1b170f]">
             <div>
               <h1 className="text-4xl font-secondary text-center">
                 Женщины казненные
@@ -41,13 +41,13 @@ export default async function Home() {
               <i>A. Ахматова </i></p>
           </div>
           </div>
-          <DeathSentenceList />
+          <DeathSentenceList/>
           <div className="page-container text-xs text-foreground">
             © {new Date().getFullYear()} Licensed under MIT.
           </div>
         </div>
         </div>
-        <ImageGrid images={images}/>
+        <ImageGrid images={images} className="bg-[#1b170f]"/>
       </section>
   );
 }
