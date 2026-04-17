@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function DocumentPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const slug = decodeURIComponent(resolvedParams.slug);
+  const slug = decodeURIComponent(resolvedParams.slug).normalize("NFC");
   const result = await getDocBySlug(slug);
 
   if (!result.data) {

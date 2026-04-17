@@ -61,7 +61,7 @@ function ListSection({
   const listItem = (doc: DocumentInfo) => (
         <li key={doc.slug} className="mb-2">
           <Link
-            href={`/lists/${doc.slug}`}
+            href={`/lists/${doc.slug.normalize("NFC")}`}
             prefetch={false}
             className="whitespace-nowrap hover:underline text-text-secondary"
           >
