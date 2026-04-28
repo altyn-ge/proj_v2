@@ -38,7 +38,7 @@ export const ImageGrid: React.FC<ImageGridProps> = ({
     [columns, rowHeight, gap, images]
   );
 
-  const { trackRef } = useTransformScroller({
+  const { trackRef, isPaused } = useTransformScroller({
     viewportRef,
     speedPps,
     persistKey,
@@ -74,6 +74,22 @@ export const ImageGrid: React.FC<ImageGridProps> = ({
           </div>
         ))}
       </div>
+      {isPaused && (
+        <div style={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          background: "rgba(0,0,0,0.55)",
+          color: "rgba(255,255,255,0.85)",
+          fontSize: 11,
+          padding: "3px 10px",
+          borderRadius: 4,
+          pointerEvents: "none",
+          zIndex: 2,
+        }}>
+          paused — Shift+S to resume
+        </div>
+      )}
     </div>
   );
 };

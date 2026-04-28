@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useMeasureHalfHeight } from "./useMeasureHalfHeight";
 import { useTransformLoop } from "./useTransformLoop";
 import { usePersistOffset } from "./usePersistOffset";
@@ -8,13 +8,14 @@ export type ResumeMode = "pause" | "continue";
 export interface UseTransformScrollerOptions {
   viewportRef: MutableRefObject<HTMLDivElement | null>;
   speedPps?: number;
-  persistKey?: string;            // enable persistence if provided
-  persistThrottleMs?: number;     // default 500ms
-  resumeMode?: ResumeMode;        // "continue" (default) or "pause" after restore
-  layoutSignature?: string;       // hash/descriptor of layout+content; mismatch => ignore saved state
+  persistKey?: string;
+  persistThrottleMs?: number;
+  resumeMode?: ResumeMode;
+  layoutSignature?: string;
 }
 
 export function useTransformScroller({
+  viewportRef,
   speedPps = 1000,
   persistKey,
   persistThrottleMs = 500,
@@ -22,11 +23,10 @@ export function useTransformScroller({
   layoutSignature,
 }: UseTransformScrollerOptions) {
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // 1) Measure content height (one copy = halfHeight)
   const { halfHeight } = useMeasureHalfHeight(trackRef);
 
-  // 3) Persistence plugin (restore + throttled save)
   const {
     restoreIfNeeded,
     maybeSave,
@@ -39,28 +39,59 @@ export function useTransformScroller({
     layoutSignature,
   });
 
-  // 4) Core transform loop
   const { offsetRef, setOffset } = useTransformLoop({
     trackRef,
     speedPps,
     halfHeight,
+    paused: isPaused,
     onFrame: () => {
-      // Throttle saving during animation frames
       maybeSave(offsetRef.current, halfHeight);
     },
   });
 
-  // 5) When halfHeight changes (resize/content updates), re-normalize offset
+  // Keyboard shortcut: Shift+S toggles pause
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      if (e.key.toLowerCase() === "s" && e.shiftKey) {
+        e.preventDefault();
+        setIsPaused(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Manual scroll via mouse wheel when paused
+  const handleWheel = useCallback((e: WheelEvent) => {
+    e.preventDefault();
+    setOffset(y => {
+      let next = y - e.deltaY;
+      if (halfHeight > 0) {
+        while (next <= -halfHeight) next += halfHeight;
+        while (next > 0) next -= halfHeight;
+      }
+      return next;
+    });
+  }, [halfHeight, setOffset]);
+
+  useEffect(() => {
+    if (!isPaused) return;
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    viewport.addEventListener("wheel", handleWheel, { passive: false });
+    return () => viewport.removeEventListener("wheel", handleWheel);
+  }, [isPaused, viewportRef, handleWheel]);
+
   useEffect(() => {
     if (!trackRef.current || halfHeight <= 0) return;
-    // Try to restore from storage exactly once (no-op after first success)
     restoreIfNeeded(halfHeight, setOffset);
-    // Ensure current offset is valid for the new halfHeight
     setOffset((y) => normalizeIntoLoop(y, halfHeight));
-    // Save immediately after adopting new geometry
     saveNow(offsetRef.current, halfHeight);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [halfHeight]);
 
-  return { trackRef };
+  return { trackRef, isPaused };
 }

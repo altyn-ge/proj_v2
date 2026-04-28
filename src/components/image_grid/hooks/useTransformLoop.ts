@@ -4,7 +4,8 @@ interface UseTransformLoopOptions {
   trackRef: React.RefObject<HTMLDivElement>;
   speedPps: number;
   halfHeight: number;
-  onFrame?: () => void; // called after transform applied
+  paused?: boolean;
+  onFrame?: () => void;
 }
 
 /** Core rAF loop: moves the track upward and snaps every halfHeight for a seamless loop. */
@@ -12,9 +13,10 @@ export function useTransformLoop({
   trackRef,
   speedPps,
   halfHeight,
+  paused = false,
   onFrame,
 }: UseTransformLoopOptions) {
-  const offsetRef = useRef(0); // negative while moving up
+  const offsetRef = useRef(0);
   const lastRef = useRef(performance.now());
   const rafRef = useRef<number | null>(null);
 
@@ -30,8 +32,12 @@ export function useTransformLoop({
   };
 
   useEffect(() => {
+    if (paused) return;
+
     const track = trackRef.current;
     if (!track) return;
+
+    lastRef.current = performance.now();
 
     const tick = (now: number) => {
       const dt = (now - lastRef.current) / 1000;
@@ -53,7 +59,7 @@ export function useTransformLoop({
     return () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
     };
-  }, [trackRef, speedPps, halfHeight, onFrame, apply]);
+  }, [trackRef, speedPps, halfHeight, paused, onFrame, apply]);
 
   return { offsetRef, setOffset };
 }
