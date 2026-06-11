@@ -15,6 +15,7 @@ export function generateMetadata() {
 export default async function ListsPage() {
   const byYear = await getDocsList(DOCLISTS.YEAR);
   const byRegion = await getDocsList(DOCLISTS.REGION);
+  const inGulag = await getDocsList(DOCLISTS.GULAG);
   const byNationality = await getDocsList(DOCLISTS.NATIONALITY);
   // const list = await getDocsList();
 
@@ -36,6 +37,7 @@ export default async function ListsPage() {
           <ListSection
             byNationality={byNationality}
             byRegion={byRegion}
+            inGulag={inGulag}
             byYear={byYear}
           />
         </div>
@@ -49,11 +51,13 @@ export default async function ListsPage() {
 function ListSection({
   byNationality,
   byRegion,
+  inGulag,
   byYear,
   className,
 }: {
   byNationality: DocumentInfo[],
   byRegion: DocumentInfo[],
+  inGulag: DocumentInfo[],
   byYear: DocumentInfo[],
   className?: string;
 }) {
@@ -84,6 +88,11 @@ function ListSection({
         <ul className={clsx("columns-1  px-4",className)}>
             {byRegion.map(listItem)}
         </ul>
+        <p className="text-1xl font-semibold tracking-tight pt-10 pb-4 px-4" key="in_gulag_title">Умершие в системе ГУЛАГа</p>
+        <ul className={clsx("columns-1  px-4",className)}>
+            {inGulag.map(listItem)}
+        </ul>
+
       </div>
 
 

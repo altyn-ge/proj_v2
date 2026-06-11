@@ -15,9 +15,10 @@ interface PageProps {
 export async function generateStaticParams() {
   const byYear = await getDocsList(DOCLISTS.YEAR);
   const byRegion = await getDocsList(DOCLISTS.REGION);
+  const inGulag = await getDocsList(DOCLISTS.GULAG);
   const byNationality = await getDocsList(DOCLISTS.NATIONALITY);
 
-  const list = [...byYear,...byRegion,...byNationality]
+  const list = [...byYear,...byRegion,...inGulag,...byNationality]
   return list.map(({ slug }) => ({
     slug:
       process.env.NODE_ENV === "production" ? slug : encodeURIComponent(slug), // production auto encodes

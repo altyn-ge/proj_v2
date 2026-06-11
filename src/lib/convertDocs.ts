@@ -7,7 +7,8 @@ export enum DOCLISTS {
   ROOT = "docs",
   NATIONALITY = "docs/BYNATIONALITY",
   YEAR = "docs/BYYEAR",
-  REGION = "docs/BYREGION"
+  REGION = "docs/BYREGION",
+  GULAG = "docs/INGULAG"
 }
 
 export async function getDocsList(dir: string): Promise<DocumentInfo[]> {
