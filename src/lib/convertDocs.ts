@@ -39,8 +39,10 @@ function formatSlug(filename: string) {
 }
 
 function sortDocsList(a: DocumentInfo, b: DocumentInfo) {
-  if(a.title.startsWith("Национальность неизвестна")) return 1
-  if(b.title.startsWith("Национальность неизвестна")) return -1
+  if(a.title.startsWith("Национальность неизвестна")) return 2
+  if(b.title.startsWith("Национальность неизвестна")) return -2
+  if(a.title.startsWith("Иностранки")) return 1
+  if(b.title.startsWith("Иностранки")) return -1
   return a.title.localeCompare(b.title, "ru", { sensitivity: "base" });
 }
 
